@@ -1,4 +1,4 @@
-#include "test_main.h"
+#include "test.h"
 
 int main(void) {
   Suite *test_suites[] = {REGISTER_TESTS};
