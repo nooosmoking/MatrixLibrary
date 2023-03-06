@@ -7,25 +7,12 @@ int s21_create_matrix(int rows, int columns, matrix_t *result) {
         size_t size = rows * sizeof (double*) + rows * columns * sizeof (double);
         result->matrix = (double**) calloc(1, size);
         double* data = (double*) (result->matrix + rows);
-        for (size_t i = 0; i < rows; i++)
+        for (int i = 0; i < rows; i++)
         {
             result->matrix[i] = data + columns * i;
         }
-        
-
-
-
-
-
-
-
     } else {
         status = 1;
     }
-
-
-
-
-
     return status;
 }
