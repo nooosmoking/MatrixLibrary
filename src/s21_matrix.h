@@ -1,10 +1,13 @@
 #ifndef S21_MATRIX_H
 #define S21_MATRIX_H
 
+#include <stdlib.h>
+#include <math.h>
+
 typedef struct matrix_struct {
-    double** matrix;
-    int rows;
-    int columns;
+  double **matrix;
+  int rows;
+  int columns;
 } matrix_t;
 
 int s21_create_matrix(int rows, int columns, matrix_t *result);
@@ -21,6 +24,7 @@ int s21_inverse_matrix(matrix_t *A, matrix_t *result);
 
 int is_matrix(matrix_t *matrix);
 int minor(int row, int column, matrix_t *A, matrix_t *result);
+int simple_determinant(matrix_t *A, int size);
 // double s21_determinant_recursive(matrix_t *A);
 // int calc_helper(matrix_t *A, matrix_t *result);
 

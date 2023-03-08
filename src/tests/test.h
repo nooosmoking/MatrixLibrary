@@ -6,7 +6,6 @@
 
 #include "../s21_matrix.h"
 
-
 Suite *suite_create(void);
 Suite *suite_remove(void);
 Suite *suite_eq(void);
@@ -20,6 +19,8 @@ Suite *suite_determinant(void);
 Suite *suite_inverse(void);
 
 #define ARRAY_SIZE 11
-#define REGISTER_TESTS                                                     \
-suite_create(), suite_remove(), suite_eq(), suite_sum(), suite_sub(), suite_mult_number(), suite_mult(), suite_transpose(), suite_calc_complements(), suite_determinant(), suite_inverse()
+#define REGISTER_TESTS                                                  \
+  suite_create(), suite_remove(), suite_eq(), suite_sum(), suite_sub(), \
+      suite_mult_number(), suite_mult(), suite_transpose(),             \
+      suite_calc_complements(), suite_determinant(), suite_inverse()
 #endif  // TEST
