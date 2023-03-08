@@ -1,11 +1,10 @@
 #include "../s21_matrix.h"
 
-int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
+int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
   int status = 0;
-  if (A->rows <= 0 && A->columns <= 0 && B->rows <= 0 && B->columns <= 0 &&
-      !(A->matrix) && !(B->matrix)) {
+  if (!is_matrix(A) || !is_matrix(B)) {
     status = 1;
-  } else if (A->rows != B->rows && A->columns != B->columns) {
+  } else if (A->rows != B->rows || A->columns != B->columns) {
     status = 2;
   } else {
     s21_create_matrix(A->rows, A->columns, result);

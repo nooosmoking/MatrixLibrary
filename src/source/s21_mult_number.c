@@ -2,7 +2,7 @@
 
 int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
   int status = 0;
-  if (A->rows <= 0 && A->columns <= 0 && !(A->matrix)) {
+  if (!is_matrix(A)) {
     status = 1;
   } else {
     s21_create_matrix(A->rows, A->columns, result);

@@ -11,15 +11,17 @@ else
 	TEST_FLAGS  = -fprofile-arcs -ftest-coverage --coverage $^ -o $@ -lcheck -lgcov -lpthread -lm -lsubunit 
 endif
 
+ERROR_FLAGS  =  -Wextra -Wall -Wuninitialized -Winit-self -Wmaybe-uninitialized -fanalyzer -fsanitize=address
+
 all: clean s21_matrix.a test
 
 s21_matrix.a: ${SOURCE} clean
-	$(GCC) $(LDFLAGS) $(SOURCE)
+	$(GCC) $(ERROR_FLAGS) $(LDFLAGS) $(SOURCE)
 	ar rc $@  *.o
 	ranlib $@
 
 test: ${SOURCE} ${TEST_SOURCE}
-	$(GCC) $(TEST_FLAGS) 
+	$(GCC) $(ERROR_FLAGS) $(TEST_FLAGS) 
 	./$@
 
 gcov_report: test
