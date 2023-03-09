@@ -17,8 +17,7 @@ Suite *suite_mult(void);
 Suite *suite_transpose(void);
 Suite *suite_calc_complements(void);
 Suite *suite_determinant(void);
-// Suite *suite_inverse(void);
-
+Suite *suite_inverse(void);
 
 double get_rand(double min, double max);
 

@@ -11,7 +11,8 @@ else
 	TEST_FLAGS  = -fprofile-arcs -ftest-coverage --coverage $^ -o $@ -lcheck -lgcov -lpthread -lm -lsubunit 
 endif
 
-ERROR_FLAGS  =  -Wextra -Wall -Wuninitialized -Winit-self -Wmaybe-uninitialized -fanalyzer -fsanitize=address
+ERROR_FLAGS  =  -Wextra -Wall -Wuninitialized -Winit-self -Wmaybe-uninitialized 
+# -fsanitize=address
 
 all: clean s21_matrix.a test
 

@@ -265,8 +265,11 @@ START_TEST(casual_matrix_4) {
   A.matrix[2][2] = 12.12;
   double res = 0;
   int error = s21_determinant(&A, &res);
-  // double check = A.matrix[0][0] * A.matrix[1][1] * A.matrix[2][2] + A.matrix[0][1] * A.matrix[1][2] * A.matrix[2][0] + A.matrix[0][2] * A.matrix[1][0] * A.matrix[2][1] - A.matrix[0][2] * A.matrix[1][1] * A.matrix[2][0] - A.matrix[0][0] * A.matrix[1][2] * A.matrix[2][1] - A.matrix[0][1] * A.matrix[1][0] * A.matrix[2][2];
-  // printf("%lf", check);
+  // double check = A.matrix[0][0] * A.matrix[1][1] * A.matrix[2][2] +
+  // A.matrix[0][1] * A.matrix[1][2] * A.matrix[2][0] + A.matrix[0][2] *
+  // A.matrix[1][0] * A.matrix[2][1] - A.matrix[0][2] * A.matrix[1][1] *
+  // A.matrix[2][0] - A.matrix[0][0] * A.matrix[1][2] * A.matrix[2][1] -
+  // A.matrix[0][1] * A.matrix[1][0] * A.matrix[2][2]; printf("%lf", check);
   ck_assert_double_eq_tol(462.05612, res, 1e-7);
   ck_assert_int_eq(0, error);
   s21_remove_matrix(&A);
