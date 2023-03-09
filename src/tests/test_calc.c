@@ -3,10 +3,10 @@
 START_TEST(test_one_by_one) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int codec = s21_create_matrix(1, 1, &m);
-  if (!codec) {
-    int code = s21_calc_complements(&m, &result);
-    ck_assert_int_eq(code, OK);
+  int err = s21_create_matrix(1, 1, &m);
+  if (!err) {
+    int status = s21_calc_complements(&m, &result);
+    ck_assert_int_eq(status, OK);
     s21_remove_matrix(&m);
     s21_remove_matrix(&result);
   }
@@ -16,18 +16,18 @@ END_TEST
 START_TEST(test_incorrect) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int code = s21_calc_complements(&m, &result);
-  ck_assert_int_eq(code, INCORRECT_MATRIX);
+  int status = s21_calc_complements(&m, &result);
+  ck_assert_int_eq(status, INCORRECT_MATRIX);
 }
 END_TEST
 
 START_TEST(test_not_sqare) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int codec = s21_create_matrix(3, 4, &m);
-  if (codec == OK) {
-    int code = s21_calc_complements(&m, &result);
-    ck_assert_int_eq(code, CALC_ERROR);
+  int err = s21_create_matrix(3, 4, &m);
+  if (!err) {
+    int status = s21_calc_complements(&m, &result);
+    ck_assert_int_eq(status, CALC_ERROR);
     s21_remove_matrix(&m);
     s21_remove_matrix(&result);
   }
@@ -38,9 +38,9 @@ START_TEST(test_normal) {
   matrix_t expected = {0};
   matrix_t m = {0};
   matrix_t result = {0};
-  int code1 = s21_create_matrix(3, 3, &m);
-  int code2 = s21_create_matrix(3, 3, &expected);
-  if (!code1 && !code2) {
+  int err1 = s21_create_matrix(3, 3, &m);
+  int err2 = s21_create_matrix(3, 3, &expected);
+  if (!err1 && !err2) {
     m.matrix[0][0] = 1;
     m.matrix[0][1] = 2;
     m.matrix[0][2] = 3;
@@ -65,11 +65,11 @@ START_TEST(test_normal) {
     expected.matrix[2][1] = -2;
     expected.matrix[2][2] = 4;
 
-    int code = s21_calc_complements(&m, &result);
+    int status = s21_calc_complements(&m, &result);
     int eq = s21_eq_matrix(&result, &expected);
 
     ck_assert_int_eq(eq, SUCCESS);
-    ck_assert_int_eq(code, OK);
+    ck_assert_int_eq(status, OK);
     s21_remove_matrix(&m);
     s21_remove_matrix(&result);
     s21_remove_matrix(&expected);
@@ -78,7 +78,7 @@ START_TEST(test_normal) {
 END_TEST
 
 Suite *suite_calc_complements(void) {
-  Suite *s = suite_create("calc");
+  Suite *s = suite_create("calc_complements");
   TCase *tc = tcase_create("tc");
 
   tcase_add_test(tc, test_normal);

@@ -11,8 +11,7 @@ else
 	TEST_FLAGS  = -fprofile-arcs -ftest-coverage --coverage $^ -o $@ -lcheck -lgcov -lpthread -lm -lsubunit 
 endif
 
-ERROR_FLAGS  =  -Wextra -Wall -Wuninitialized -Winit-self -Wmaybe-uninitialized 
-# -fsanitize=address
+ERROR_FLAGS  =  -Wextra -Wall -Werror -Wuninitialized -Winit-self -Wmaybe-uninitialized -fsanitize=address
 
 all: clean s21_matrix.a test
 
@@ -43,6 +42,11 @@ format: ${ALL} ${HEADER_SOURCE}
 	cp .././materials/linters/.clang-format .
 	clang-format -i -style=google $^;
 	rm .clang-format
+
+valgrind: test
+	CK_FORK=no valgrind --trace-children=yes --track-fds=yes --leak-check=yes --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind_log.txt ./test
+	valgrind --leak-check=full --leak-resolution=high ./test
+
 
 clean: 
 	-rm -rf *.o && rm -rf *.gcno

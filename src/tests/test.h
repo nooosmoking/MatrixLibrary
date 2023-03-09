@@ -2,8 +2,6 @@
 #define TEST
 
 #include <check.h>
-#include <time.h>
-#include <unistd.h>
 
 #include "../s21_matrix.h"
 
@@ -18,6 +16,7 @@ Suite *suite_transpose(void);
 Suite *suite_calc_complements(void);
 Suite *suite_determinant(void);
 Suite *suite_inverse(void);
+Suite *s21_matrix_suite(void);
 
 double get_rand(double min, double max);
 

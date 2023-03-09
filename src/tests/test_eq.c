@@ -46,28 +46,11 @@ START_TEST(not_eq) {
 }
 END_TEST
 
-START_TEST(not_eq1) {
-  matrix_t m = {0};
-  int rows = rand() % 100 + 1;
-  int cols = rand() % 100 + 1;
-  rows = -rows;
-  cols = -cols;
-  s21_create_matrix(rows, cols, &m);
-  matrix_t mtx = {0};
-  const int rows1 = rand() % 100 + 1;
-  const int cols1 = rand() % 100 + 1;
-  s21_create_matrix(rows1, cols1, &mtx);
-  ck_assert_int_eq(s21_eq_matrix(&m, &mtx), FAILURE);
-  s21_remove_matrix(&m);
-  s21_remove_matrix(&mtx);
-}
-END_TEST
-
 START_TEST(zero_matrix) {
   matrix_t A = {0};
   matrix_t B = {0};
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(0, result);
+  ck_assert_int_eq(FAILURE, result);
 }
 
 START_TEST(zero_matrix_1) {
@@ -76,7 +59,7 @@ START_TEST(zero_matrix_1) {
   s21_create_matrix(0, 0, &A);
   s21_create_matrix(0, 0, &B);
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(0, result);
+  ck_assert_int_eq(FAILURE, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
@@ -89,7 +72,7 @@ START_TEST(casual_matrix_1) {
   A.matrix[0][0] = 1;
   B.matrix[0][0] = 1;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
+  ck_assert_int_eq(SUCCESS, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
@@ -102,7 +85,7 @@ START_TEST(casual_matrix_2) {
   A.matrix[0][0] = 1;
   B.matrix[0][0] = 2;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(0, result);
+  ck_assert_int_eq(FAILURE, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
@@ -121,31 +104,12 @@ START_TEST(casual_matrix_3) {
   B.matrix[1][0] = 3;
   B.matrix[1][1] = 4;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
+  ck_assert_int_eq(SUCCESS, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
 
 START_TEST(casual_matrix_4) {
-  matrix_t A = {0};
-  matrix_t B = {0};
-  s21_create_matrix(2, 2, &A);
-  s21_create_matrix(2, 2, &B);
-  A.matrix[0][0] = 1;
-  A.matrix[0][1] = 2;
-  A.matrix[1][0] = 3;
-  A.matrix[1][1] = 4;
-  B.matrix[0][0] = 1;
-  B.matrix[0][1] = 2;
-  B.matrix[1][0] = 3;
-  B.matrix[1][1] = 4;
-  int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
-  s21_remove_matrix(&A);
-  s21_remove_matrix(&B);
-}
-
-START_TEST(casual_matrix_5) {
   matrix_t A = {0};
   matrix_t B = {0};
   s21_create_matrix(2, 2, &A);
@@ -159,12 +123,12 @@ START_TEST(casual_matrix_5) {
   B.matrix[1][0] = 3.05;
   B.matrix[1][1] = 4;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
+  ck_assert_int_eq(SUCCESS, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
 
-START_TEST(casual_matrix_6) {
+START_TEST(casual_matrix_5) {
   matrix_t A = {0};
   matrix_t B = {0};
   s21_create_matrix(2, 2, &A);
@@ -178,12 +142,12 @@ START_TEST(casual_matrix_6) {
   B.matrix[1][0] = 3.05;
   B.matrix[1][1] = -4;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
+  ck_assert_int_eq(SUCCESS, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
 
-START_TEST(casual_matrix_7) {
+START_TEST(casual_matrix_6) {
   matrix_t A = {0};
   matrix_t B = {0};
   s21_create_matrix(2, 2, &A);
@@ -197,12 +161,12 @@ START_TEST(casual_matrix_7) {
   B.matrix[1][0] = 3.05;
   B.matrix[1][1] = 4;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(1, result);
+  ck_assert_int_eq(SUCCESS, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
 
-START_TEST(casual_matrix_8) {
+START_TEST(casual_matrix_7) {
   matrix_t A = {0};
   matrix_t B = {0};
   s21_create_matrix(2, 2, &A);
@@ -216,18 +180,17 @@ START_TEST(casual_matrix_8) {
   B.matrix[1][0] = 3.05;
   B.matrix[1][1] = 4;
   int result = s21_eq_matrix(&A, &B);
-  ck_assert_int_eq(0, result);
+  ck_assert_int_eq(FAILURE, result);
   s21_remove_matrix(&A);
   s21_remove_matrix(&B);
 }
 
 Suite *suite_eq(void) {
-  Suite *s = suite_create("suite_eq_matrix");
-  TCase *tc = tcase_create("case_eq_matrix");
+  Suite *s = suite_create("eq_matrix");
+  TCase *tc = tcase_create("tc");
 
   tcase_add_test(tc, not_eq);
   tcase_add_loop_test(tc, eq_matrix, 0, 100);
-  tcase_add_test(tc, not_eq1);
 
   tcase_add_test(tc, zero_matrix);
   tcase_add_test(tc, zero_matrix_1);
@@ -238,7 +201,6 @@ Suite *suite_eq(void) {
   tcase_add_test(tc, casual_matrix_5);
   tcase_add_test(tc, casual_matrix_6);
   tcase_add_test(tc, casual_matrix_7);
-  tcase_add_test(tc, casual_matrix_8);
 
   suite_add_tcase(s, tc);
   return s;

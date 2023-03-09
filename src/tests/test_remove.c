@@ -12,7 +12,7 @@ END_TEST
 START_TEST(remove_non_zero_matrix) {
   matrix_t A = {NULL, 0, 0};
   s21_create_matrix(3, 3, &A);
-  _ck_assert_ptr_null(A.matrix, !=);
+  ck_assert_ptr_nonnull(A.matrix);
   ck_assert_int_eq(3, A.columns);
   ck_assert_int_eq(3, A.rows);
 

@@ -1,19 +1,16 @@
-#include <stdio.h>
-
 #include "test.h"
 
 START_TEST(test_one_by_one) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int codec = s21_create_matrix(1, 1, &m);
-  if (!codec) {
+  int err = s21_create_matrix(1, 1, &m);
+  if (!err) {
     m.matrix[0][0] = 5;
-    int code = s21_inverse_matrix(&m, &result);
-    // printf("%lf -- %lf", result.matrix[0][0], (1.0 / m.matrix[0][0]));
+    int status = s21_inverse_matrix(&m, &result);
     ck_assert_int_eq(result.matrix[0][0] == (1.0 / m.matrix[0][0]), 1);
-    ck_assert_int_eq(code, OK);
-    // s21_remove_matrix(&m);
-    // s21_remove_matrix(&result);
+    ck_assert_int_eq(status, OK);
+    s21_remove_matrix(&m);
+    s21_remove_matrix(&result);
   }
 }
 END_TEST
@@ -21,10 +18,10 @@ END_TEST
 START_TEST(test_zero_det) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int codec = s21_create_matrix(1, 1, &m);
-  if (!codec) {
-    int code = s21_inverse_matrix(&m, &result);
-    ck_assert_int_eq(code, CALC_ERROR);
+  int err = s21_create_matrix(1, 1, &m);
+  if (!err) {
+    int status = s21_inverse_matrix(&m, &result);
+    ck_assert_int_eq(status, CALC_ERROR);
     s21_remove_matrix(&m);
   }
 }
@@ -33,18 +30,18 @@ END_TEST
 START_TEST(test_incorrect) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int code = s21_inverse_matrix(&m, &result);
-  ck_assert_int_eq(code, INCORRECT_MATRIX);
+  int status = s21_inverse_matrix(&m, &result);
+  ck_assert_int_eq(status, INCORRECT_MATRIX);
 }
 END_TEST
 
 START_TEST(test_not_sqare) {
   matrix_t m = {0};
   matrix_t result = {0};
-  int codec = s21_create_matrix(1, 4, &m);
-  if (!codec) {
-    int code = s21_inverse_matrix(&m, &result);
-    ck_assert_int_eq(code, CALC_ERROR);
+  int err = s21_create_matrix(1, 4, &m);
+  if (!err) {
+    int status = s21_inverse_matrix(&m, &result);
+    ck_assert_int_eq(status, CALC_ERROR);
     s21_remove_matrix(&m);
   }
 }
@@ -53,11 +50,11 @@ END_TEST
 START_TEST(test_normal) {
   matrix_t m = {0};
   matrix_t expected = {0};
-  int codec1 = 0, codec2 = 0;
-  codec1 = s21_create_matrix(3, 3, &m);
-  if (!codec1) codec2 = s21_create_matrix(3, 3, &expected);
+  int err1 = 0, err2 = 0;
+  err1 = s21_create_matrix(3, 3, &m);
+  if (!err1) err2 = s21_create_matrix(3, 3, &expected);
 
-  if (!codec1 && !codec2) {
+  if (!err1 && !err2) {
     m.matrix[0][0] = 2;
     m.matrix[0][1] = 5;
     m.matrix[0][2] = 7;
@@ -82,7 +79,7 @@ START_TEST(test_normal) {
     expected.matrix[2][1] = -29;
     expected.matrix[2][2] = 24;
     matrix_t result = {0};
-    int code = s21_inverse_matrix(&m, &result);
+    int status = s21_inverse_matrix(&m, &result);
     int eq = s21_eq_matrix(&result, &expected);
 
     s21_remove_matrix(&m);
@@ -90,7 +87,7 @@ START_TEST(test_normal) {
     s21_remove_matrix(&expected);
 
     ck_assert_int_eq(eq, SUCCESS);
-    ck_assert_int_eq(code, OK);
+    ck_assert_int_eq(status, OK);
   }
 }
 END_TEST
@@ -98,11 +95,11 @@ END_TEST
 START_TEST(test_normal_1) {
   matrix_t m = {0};
   matrix_t expected = {0};
-  int codec1 = 0, codec2 = 0;
-  codec1 = s21_create_matrix(3, 3, &m);
-  if (!codec1) codec2 = s21_create_matrix(3, 3, &expected);
+  int err1 = 0, err2 = 0;
+  err1 = s21_create_matrix(3, 3, &m);
+  if (!err1) err2 = s21_create_matrix(3, 3, &expected);
 
-  if (!codec1 && !codec2) {
+  if (!err1 && !err2) {
     m.matrix[0][0] = 2;
     m.matrix[0][1] = 4;
     m.matrix[0][2] = 0;
@@ -127,7 +124,7 @@ START_TEST(test_normal_1) {
     expected.matrix[2][1] = 0;
     expected.matrix[2][2] = 0.25;
     matrix_t result = {0};
-    int code = s21_inverse_matrix(&m, &result);
+    int status = s21_inverse_matrix(&m, &result);
     int eq = s21_eq_matrix(&result, &expected);
 
     s21_remove_matrix(&m);
@@ -135,13 +132,13 @@ START_TEST(test_normal_1) {
     s21_remove_matrix(&expected);
 
     ck_assert_int_eq(eq, SUCCESS);
-    ck_assert_int_eq(code, OK);
+    ck_assert_int_eq(status, OK);
   }
 }
 END_TEST
 
 Suite *suite_inverse(void) {
-  Suite *s = suite_create("suite_inverse");
+  Suite *s = suite_create("inverse_matrix");
   TCase *tc = tcase_create("tc");
 
   tcase_add_test(tc, test_normal);
@@ -154,18 +151,3 @@ Suite *suite_inverse(void) {
   suite_add_tcase(s, tc);
   return s;
 }
-
-// printf("CHECK %d %d RES %d %d\n", expected.rows, expected.columns,
-//        result.rows, result.columns);
-// printf("Expected ");
-// for (int i = 0; i < expected.rows; i++) {
-//   for (int j = 0; j < expected.columns; j++)
-//     printf("%lf ", expected.matrix[i][j]);
-// }
-// printf("\n");
-// printf("Res ");
-// for (int i = 0; i < result.rows; i++) {
-//   for (int j = 0; j < result.columns; j++)
-//     printf("%lf ", result.matrix[i][j]);
-// }
-// printf("\n");
