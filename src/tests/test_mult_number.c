@@ -30,8 +30,6 @@ START_TEST(mult_number_matrix2) {
   cols = -cols;
   matrix_t m = {0};
   s21_create_matrix(rows, cols, &m);
-  matrix_t check = {0};
-  s21_create_matrix(rows, cols, &check);
   double mult_number = get_rand(-10e5, 10e5);
 
   matrix_t res = {0};
@@ -39,7 +37,6 @@ START_TEST(mult_number_matrix2) {
 
   s21_remove_matrix(&m);
   s21_remove_matrix(&res);
-  s21_remove_matrix(&check);
 }
 END_TEST
 
@@ -47,7 +44,7 @@ Suite *suite_mult_number(void) {
   Suite *s = suite_create("suite_mult_number_matrix");
   TCase *tc = tcase_create("case_mult_number_matrix");
 
-  tcase_add_loop_test(tc, mult_number_matrix, 0, 10);
+  tcase_add_loop_test(tc, mult_number_matrix, 0, 100);
   tcase_add_loop_test(tc, mult_number_matrix2, 0, 10);
 
   suite_add_tcase(s, tc);

@@ -10,7 +10,7 @@ void s21_remove_matrix(matrix_t *A) {
     }
     A->rows = 0;
     A->columns = 0;
-    free(A->matrix);
+    if (A->matrix)free(A->matrix);
     A->matrix = NULL;
   }
 }

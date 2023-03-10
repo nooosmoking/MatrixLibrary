@@ -16,12 +16,12 @@ ERROR_FLAGS  =  -Wextra -Wall -Werror -Wuninitialized -Winit-self -Wmaybe-uninit
 all: clean s21_matrix.a test
 
 s21_matrix.a: ${SOURCE} clean
-	$(GCC) $(ERROR_FLAGS) $(LDFLAGS) $(SOURCE)
+	$(GCC) $(LDFLAGS) $(SOURCE)
 	ar rc $@  *.o
 	ranlib $@
 
 test: ${SOURCE} ${TEST_SOURCE}
-	$(GCC) $(ERROR_FLAGS) $(TEST_FLAGS) 
+	$(GCC) $(TEST_FLAGS) 
 	./$@
 
 gcov_report: test

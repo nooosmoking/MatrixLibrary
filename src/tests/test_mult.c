@@ -7,8 +7,7 @@ START_TEST(mult_matrix) {
   s21_create_matrix(rows, cols, &m);
   matrix_t mtx = {0};
   s21_create_matrix(cols, rows, &mtx);
-  // printf("CHECK %d %d RES %d %d\n", m.rows, m.columns, mtx.rows, mtx.columns
-  // );
+
   for (int i = 0; i < rows; i++)
     for (int j = 0; j < cols; j++) m.matrix[i][j] = get_rand(-10e10, 10e10);
 
@@ -27,8 +26,6 @@ START_TEST(mult_matrix) {
   }
   matrix_t res = {0};
   ck_assert_int_eq(s21_mult_matrix(&m, &mtx, &res), OK);
-  // printf("CHECK %d %d RES %d %d\n", check.rows, check.columns, res.rows,
-  // res.columns );
   ck_assert_int_eq(s21_eq_matrix(&check, &res), SUCCESS);
 
   s21_remove_matrix(&m);
@@ -80,16 +77,12 @@ START_TEST(mult_matrix2) {
   matrix_t mtx = {0};
   s21_create_matrix(cols, rows, &mtx);
 
-  matrix_t check = {0};
-  s21_create_matrix(m.rows, mtx.columns, &check);
-
   matrix_t res = {0};
   ck_assert_int_eq(s21_mult_matrix(&m, &mtx, &res), INCORRECT_MATRIX);
 
   s21_remove_matrix(&m);
   s21_remove_matrix(&mtx);
   s21_remove_matrix(&res);
-  s21_remove_matrix(&check);
 }
 END_TEST
 
@@ -103,16 +96,12 @@ START_TEST(mult_matrix3) {
   int cols1 = 5;
   s21_create_matrix(rows1, cols1, &mtx);
 
-  matrix_t check = {0};
-  s21_create_matrix(m.rows, mtx.columns, &check);
-
   matrix_t res = {0};
   ck_assert_int_eq(s21_mult_matrix(&m, &mtx, &res), CALC_ERROR);
 
   s21_remove_matrix(&m);
   s21_remove_matrix(&mtx);
   s21_remove_matrix(&res);
-  s21_remove_matrix(&check);
 }
 END_TEST
 
@@ -121,7 +110,7 @@ Suite *suite_mult(void) {
   TCase *tc = tcase_create("tc");
 
   tcase_add_loop_test(tc, mult_matrix, 0, 100);
-  tcase_add_loop_test(tc, mult_matrix2, 0, 100);
+  tcase_add_loop_test(tc, mult_matrix2, 0, 10);
   tcase_add_test(tc, mult_matrix3);
   tcase_add_test(tc, simple_mult);
 

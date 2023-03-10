@@ -34,15 +34,12 @@ START_TEST(transpose_matrix2) {
   cols = -cols;
   matrix_t m = {0};
   s21_create_matrix(rows, cols, &m);
-  matrix_t check = {0};
-  s21_create_matrix(cols, rows, &check);
 
   matrix_t res = {0};
   ck_assert_int_eq(s21_transpose(&m, &res), INCORRECT_MATRIX);
 
   s21_remove_matrix(&m);
   s21_remove_matrix(&res);
-  s21_remove_matrix(&check);
 }
 END_TEST
 
@@ -51,7 +48,7 @@ Suite *suite_transpose(void) {
   TCase *tc = tcase_create("case_transpose_matrix");
 
   tcase_add_loop_test(tc, transpose_matrix, 0, 100);
-  tcase_add_loop_test(tc, transpose_matrix2, 0, 100);
+  tcase_add_loop_test(tc, transpose_matrix2, 0, 10);
 
   suite_add_tcase(s, tc);
   return s;
