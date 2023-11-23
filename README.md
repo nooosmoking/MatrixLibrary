@@ -1,11 +1,6 @@
 # MatrixLibrary
 
-Matrix operations
-All operations (except matrix comparison) should return the resulting code:
-
-0 - OK
-1 - Error, incorrect matrix
-2 - Calculation error (mismatched matrix sizes; matrix for which calculations cannot be performed, etc.)
+Matrix operations:
 
 Creating matrices (create_matrix)
 
